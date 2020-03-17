@@ -5,7 +5,7 @@
 <header class="header">
     <h1 class="title">
         <span class="carret">~</span>
-        dnsrecords.io
+        dns.gir.genx.be
     </h1>
 </header>
 <main class="main">
