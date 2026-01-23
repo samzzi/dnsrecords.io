@@ -1,16 +1,15 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
-        "browsers": ["last 2 versions", "> 5% in BE"],
-        "uglify": true
+        "browsers": ["last 2 versions", "> 5% in BE"]
       },
       "modules": false
     }]
   ],
   "plugins": [
-    "syntax-dynamic-import",
-    "transform-object-rest-spread"
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-object-rest-spread"
   ],
   "env": {
     "test": {

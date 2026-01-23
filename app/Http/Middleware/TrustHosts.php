@@ -11,6 +11,10 @@ class TrustHosts extends Middleware
         $hosts = [];
 
         $trustedHosts = env('TRUSTED_HOSTS');
+        if (!$trustedHosts && app()->environment(['local', 'testing'])) {
+            // Allow any host locally when none are explicitly configured.
+            return ['^.*$'];
+        }
         if ($trustedHosts) {
             foreach (explode(',', $trustedHosts) as $host) {
                 $host = trim($host);

@@ -1,6 +1,8 @@
 const mix = require('laravel-mix');
 
-mix.config.postCss = require('./postcss.config').plugins;
+mix.options({
+    postCss: require('./postcss.config').plugins,
+});
 
 /*
  |--------------------------------------------------------------------------
