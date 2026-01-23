@@ -5,6 +5,7 @@ namespace App\Services\Commands\Commands;
 use App\Services\Commands\Command;
 use App\Services\Dns\DnsResolver;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class DnsLookup implements Command

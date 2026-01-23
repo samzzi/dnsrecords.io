@@ -44,7 +44,25 @@ class DnsResolver
 
     public function getRecords(string $domain): string
     {
-        $records = dns_get_record($domain, DNS_ANY);
+        $records = [];
+
+        try {
+            $records = dns_get_record($domain, DNS_ANY) ?: [];
+        } catch (\Throwable $e) {
+            $records = [];
+        }
+
+        if (!$records) {
+            $records = $this->getRecordsByType($domain, [
+                DNS_A,
+                DNS_AAAA,
+                DNS_NS,
+                DNS_CNAME,
+                DNS_MX,
+                DNS_TXT,
+                DNS_SOA,
+            ]);
+        }
 
         if (!$records) {
             return '';
@@ -106,6 +124,25 @@ class DnsResolver
         }
 
         return implode("\n", $lines);
+    }
+
+    private function getRecordsByType(string $domain, array $types): array
+    {
+        $records = [];
+
+        foreach ($types as $type) {
+            try {
+                $typeRecords = dns_get_record($domain, $type) ?: [];
+            } catch (\Throwable $e) {
+                $typeRecords = [];
+            }
+
+            if ($typeRecords) {
+                $records = array_merge($records, $typeRecords);
+            }
+        }
+
+        return $records;
     }
 
     private function withTrailingDot(string $value): string
