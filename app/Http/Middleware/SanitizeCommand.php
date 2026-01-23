@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\HomeController;
+use App\Services\Dns\DnsResolver;
 use Closure;
 use Illuminate\Http\Request;
-use Spatie\Dns\Dns;
 
 class SanitizeCommand
 {
@@ -17,7 +18,7 @@ class SanitizeCommand
         $sanitizedCommand = str_replace('...', '', $sanitizedCommand);
 
         if ($command !== $sanitizedCommand) {
-            return redirect()->action('HomeController@submit', ['command' => $sanitizedCommand]);
+            return redirect()->action([HomeController::class, 'submit'], ['command' => $sanitizedCommand]);
         }
 
         return $next($request);
@@ -31,6 +32,6 @@ class SanitizeCommand
             return null;
         }
 
-        return (new Dns(strip_tags($cleanCommand)))->getDomain();
+        return (new DnsResolver())->getDomain(strip_tags($cleanCommand));
     }
 }

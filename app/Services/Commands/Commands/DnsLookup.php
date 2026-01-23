@@ -3,8 +3,8 @@
 namespace App\Services\Commands\Commands;
 
 use App\Services\Commands\Command;
+use App\Services\Dns\DnsResolver;
 use Exception;
-use Spatie\Dns\Dns;
 use Symfony\Component\HttpFoundation\Response;
 
 class DnsLookup implements Command
@@ -16,12 +16,11 @@ class DnsLookup implements Command
 
     public function perform(string $command): Response
     {
-        $dns = new Dns($command);
+        $dns = new DnsResolver();
 
         try {
-            $dnsRecords = $dns->getRecords();
-
             $domain = $dns->getDomain($command);
+            $dnsRecords = $domain ? $dns->getRecords($domain) : '';
         } catch (Exception $e) {
             $dnsRecords = '';
         }
